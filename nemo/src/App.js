@@ -1,4 +1,6 @@
 import React from "react";
+import Nemo from "./Nemo";
+
 
 class App extends React.Component {
   constructor(props) {
@@ -30,29 +32,8 @@ class App extends React.Component {
     console.log(nemo_count);
     return (
       <div className="App">
-        {/* count:3으로 state지정 후 뷰 만들기 */}
-        {nemo_count.map((num, idx) => {
-          return (
-            // 리액트 요소 반환
-            <div
-              key = {idx}
-              style={{
-                width: "150px",
-                height: "150px",
-                backgroundColor: "#eee",
-                margin: "10px",
-              }}
-            >
-              nemo
-            </div>
-          );
-        })}
-        <button onClick={this.addNemo}>
-          하나 추가
-        </button>
-        <button onClick={this.removeNemo}>
-          하나 빼기
-        </button>
+        <Nemo/>
+        
       </div>
     );
   }
