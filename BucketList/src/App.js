@@ -15,13 +15,33 @@ import Detail from "./Detail";
 // NotFound컴포넌트
 import NotFound from "./NotFound";
 
+import {connect} from "react-redux";
+import {loadBucket, createBucket} from "./redux/modules/bucket"
+
+// 값을 변화시키기 위한 액션 생성 함수를 props로 받아오기 위한 함수
+const mapStateToProps = (state) => {
+  return {bucket_list: state.bucket.list};
+} //현재 스테이트값은 스토어에있는 이니셜스테이트 같은 상태값(데이터)
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    load: () => {
+      // load가져오려면 import먼저 필요
+      dispatch(loadBucket());
+    },
+    create: (bucket) => {
+      dispatch(createBucket(bucket));
+    }
+  };
+} // 액션이 생긴 것을 감시하는 디스패치를 넘겨주는 함수
+
 // 클래스형 컴포넌트는 이렇게 생겼습니다!
 class App extends React.Component {
   constructor(props) {
     super(props);
     // App 컴포넌트의 state를 정의해줍니다.
     this.state = {
-      list: ["영화관 가기", "매일 책읽기", "수영 배우기"],
+      // list: ["영화관 가기", "매일 책읽기", "수영 배우기"],
     };
 
     // 밑에서 뷰 만든 후 여기로
@@ -33,14 +53,15 @@ class App extends React.Component {
   addBucketList = () => {
     let list = this.state.list;
     const new_item = this.text.current.value;
+    this.props.create(new_item);
 
-    this.setState({list: [...list, new_item]})
+    // this.setState({list: [...list, new_item]})
     // 스프레드문법: 배열의 리스트 하나하나하나가 들어감 그리고 new_item이 배열에 새로 추가됨
     // this.state값은 변하지않고 배열이 새로 생성되는것임 -> 불변성 유지
   }
 
   componentDidMount(){
-    console.log(this.text);
+    console.log(this.props);
   }
 
   // 랜더 함수 안에 리액트 엘리먼트를 넣어줍니다!
@@ -57,9 +78,12 @@ class App extends React.Component {
             <Route
               path="/"
               exact
-              render={(props) => <BucketList list={this.state.list} history={this.props.history}/>}
+              render={(props) => (
+              <BucketList 
+                bucket_list={this.props.bucket_list}
+                history={this.props.history}/>)}
             />
-            <Route path="/detail" component={Detail}/>
+            <Route path="/detail/:index" component={Detail}/>
             {/* <Route component={NotFound}/> */}
             {/* 뒤로가기 기능까지 추가해보기 */}
             <Route render={() => (<NotFound history = {this.props.history}/>)}/>
@@ -104,4 +128,6 @@ const Line = styled.hr`
   border: 1px dotted #ddd;
 `;
 
-export default withRouter(App);
+// withrouter적용
+// connect로 묶어주기
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));

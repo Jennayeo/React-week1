@@ -2,16 +2,21 @@
 import React from "react";
 import styled from "styled-components";
 
+import {useSelector, useDispatch} from "react-redux";
+
 const BucketList = (props) => {
-  console.log(props);
-  const my_lists = props.list;
+  const bucket_list = useSelector(state => state.bucket.list);
+  // store에 있는값(=state)가지고옴
+  // state에 버킷에있는 리스트를 저장
+  // console.log(props);
+  // const my_lists = props.bucket_list;
   
   return (
     <ListStyle>
-      {my_lists.map((list, index) => {
+      {bucket_list.map((list, index) => {
         return (
           <ItemStyle className="list_item" key={index} onClick={() => {
-          props.history.push('/detail');
+          props.history.push('/detail/'+index);
           }}>
             {list}
           </ItemStyle>
