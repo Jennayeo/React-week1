@@ -2,43 +2,72 @@ import React from "react";
 import styled from "styled-components";
 import img from "./jenna_mimoticon.png";
 import TinderCard from "react-tinder-card";
+import {useSelector, useDispatch} from "react-redux";
+import {addAnswer} from "./redux/modules/quiz"; // 대답만 추가
+import Score from "./Score";
 
 // import SwipeItem from "./SwipeItem";
 
 const Quiz = (props) => {
     // 맵돌리니 이미지도 여러번 찍힘을 해결해줌
-    const [num, setNum] = React.useState(0);
+    // const [num, setNum] = React.useState(0);
     // num 문제 하나하나(state)번호 저장
     // index 0부터 시작함 그래서 useState(0)
+
+    const dispatch = useDispatch();
+
+    // props대신 리덕스 연결
+    const quiz = useSelector((state) => state.quiz.quiz);
+    // 퀴즈에서 퀴즈 가져옴
+
+    const answers = useSelector((state) => state.quiz.answers);
+    const num = answers.length;
 
 // 퀴즈 리스트 받아옴
     // const list = props.list;
     const onSwipe = (direction) => {
         // direction이 어느방향으로 swipe됐는지 알려줌
-            setNum(num+1); // 다음문제로 넘어감
-        console.log("You swiped: " + direction);
-    };
-    if (num > 3) {
-        return <div>퀴즈 끝!</div>;
+    //         setNum(num+1); // 다음문제로 넘어감
+    //     console.log("You swiped: " + direction);
+    // };
+    // if (num > 3) {
+    //     return <div>퀴즈 끝!</div>;
+    // }
+        let _answer = direction === "left"? "O" : "X";
+
+        if(_answer === quiz[num].answer) {
+            // 정답일 경우,
+            dispatch(addAnswer(true));
+        } else{
+            // 오답일 경우,
+            dispatch(addAnswer(false));
+        }
     }
+
+    // 문제 끝난 후 score화면 나오게 띄우기
+    if (num > quiz.length -1) {
+        return <Score {...props}/>;
+        // return <div> 퀴즈 끝! </div>;
+    }
+
     return (
         <QuizContainer>
             <p><span>{num+1}번 문제</span></p>
         {/* index는 0으로 시작하니 +1 */}
-            {props.list.map((l, idx) => {
+            {quiz.map((l, idx) => {
                 if(num === idx) {
-                    return ( <Question key={idx}>{l.question}</Question>);
+                    return <Question key={idx}>{l.question}</Question>;
                 } // num이 배열의 idx와 똑같을때 question넘겨주기 // 리스트 하나들어가있는 question 반환
             })}
 
             <AnswerZone>
-                <Answer>O</Answer>
-                <Answer>X</Answer>
+                <Answer>{"O"}</Answer>
+                <Answer>{"X"}</Answer>
             </AnswerZone>
 
         {/* swipe할 영역 맵 돌려주기 */}
         {/* list 하나를 l이라고함 */}
-        {props.list.map((l, idx) => {
+        {quiz.map((l, idx) => {
             if(idx === num) {
                 return(
                     // <SwipeItem key={idx} onSwipe={onSwipe}/>     
