@@ -9,8 +9,11 @@ import styled from "styled-components";
 
 // props로 넘겨주기위해 (withRouter와 페어)
 import {withRouter} from "react-router";
-import {Route} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import Detail from "./Detail";
+
+// NotFound컴포넌트
+import NotFound from "./NotFound";
 
 // 클래스형 컴포넌트는 이렇게 생겼습니다!
 class App extends React.Component {
@@ -50,12 +53,17 @@ class App extends React.Component {
           {/* 컴포넌트를 넣어줍니다. */}
           {/* <컴포넌트 명 [props 명]={넘겨줄 것(리스트, 문자열, 숫자, ...)}/> */}
           {/* Route 쓰는 법 2가지를 모두 써봅시다! */}
-          <Route
-            path="/"
-            exact
-            render={(props) => <BucketList list={this.state.list} history={this.props.history}/>}
-          />
-          <Route path="/detail" component={Detail}/>
+          <Switch>
+            <Route
+              path="/"
+              exact
+              render={(props) => <BucketList list={this.state.list} history={this.props.history}/>}
+            />
+            <Route path="/detail" component={Detail}/>
+            {/* <Route component={NotFound}/> */}
+            {/* 뒤로가기 기능까지 추가해보기 */}
+            <Route render={() => (<NotFound history = {this.props.history}/>)}/>
+          </Switch>
         </Container>
         {/* 인풋박스와 추가하기 버튼을 넣어줬어요. */}
         <Input>
