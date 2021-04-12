@@ -7,6 +7,11 @@ import React from "react";
 import BucketList from "./BucketList";
 import styled from "styled-components";
 
+// props로 넘겨주기위해 (withRouter와 페어)
+import {withRouter} from "react-router";
+import {Route} from "react-router-dom";
+import Detail from "./Detail";
+
 // 클래스형 컴포넌트는 이렇게 생겼습니다!
 class App extends React.Component {
   constructor(props) {
@@ -40,21 +45,23 @@ class App extends React.Component {
     return (
       <div className="App">
         <Container>
-          <Title >내 버킷리스트</Title>
-          <Line/>
+          <Title>내 버킷리스트</Title>
+          <Line />
           {/* 컴포넌트를 넣어줍니다. */}
           {/* <컴포넌트 명 [props 명]={넘겨줄 것(리스트, 문자열, 숫자, ...)}/> */}
-          <BucketList list={this.state.list} />
+          {/* Route 쓰는 법 2가지를 모두 써봅시다! */}
+          <Route
+            path="/"
+            exact
+            render={(props) => <BucketList list={this.state.list} history={this.props.history}/>}
+          />
+          <Route path="/detail" component={Detail}/>
         </Container>
-        <div>
-          <Input>
-            <input type="text" ref={this.text}/>
-            {/* input에 ref연결 시킨 후 위로 가서 함수 생성 */}
-            <button onClick={this.addBucketList}>추가하기</button>
-            {/* 함수 생성 후 버튼에 연결 */}
-          </Input>
-        </div>
-
+        {/* 인풋박스와 추가하기 버튼을 넣어줬어요. */}
+        <Input>
+          <input type="text" ref={this.text} />
+          <button onClick={this.addBucketList}>추가하기</button>
+        </Input>
       </div>
     );
   }
@@ -89,4 +96,4 @@ const Line = styled.hr`
   border: 1px dotted #ddd;
 `;
 
-export default App;
+export default withRouter(App);
