@@ -31,6 +31,7 @@ const Detail = (props) => {
                 onClick={() => {
                     dispatch(deleteBucket(bucket_index)); // 괄호 안에는 액션 생성 함수 들어감
                     props.history.push('/');
+                    // props.history.goBack();
                 }}>
                 삭제하기
             </button>
