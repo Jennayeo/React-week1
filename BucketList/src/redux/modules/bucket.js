@@ -3,6 +3,7 @@
 // Actions
 const LOAD = "bucket/LOAD";
 const CREATE = "bucket/CREATE";
+const DELETE = "bucket/DELETE";
 
 // Initial State
 const initialState = {
@@ -18,6 +19,10 @@ export const loadBucket = (bucket) => {
 
 export const createBucket = (bucket) => {
     return {type: CREATE, bucket}; // bucket이라는 텍스트를 받아서 던져줌
+}
+
+export const deleteBucket = (bucket) => {
+    return {type: DELETE, bucket};
 }
   
 
@@ -41,6 +46,18 @@ export default function reducer(state = initialState, action = {}){
     }
     // CREATE는 텍스트를 받아와서 새 배열을 만들고 딕셔너리 안에있는 리스트라는 키값에 그 새 새배열을 넣어줌
 
+    case "bucket/DELETE": {
+        // 디테일 페이지 index사용해서 삭제 구현
+        // 새로운 리스트 만듦
+        const bucket_list = state.list.filter((l, idx) => {
+            // array filter를 사용해 받아온 인덱스와 똑같으면 리턴하지않고, 다르면 값을 리턴한다.
+            // 첫번째 인자 l=배열의 하나하나, 두번째 인자 idx=인덱스값(배열의 순번)
+            if(idx !== action.bucket){
+                return l;
+            }
+        });
+            return {list: bucket_list};
+    }
     default:
         return state;
   }
