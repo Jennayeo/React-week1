@@ -112,6 +112,24 @@ const Input = styled.div`
   margin: 20px auto;
   border-radius: 5px;
   border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  & * { // 모든아이템에게 적용
+    padding: 5px;
+  }
+  & input {
+    width: 70%;
+    &: focus{ // 네스팅 안에서 포커스
+      border: 1px solid #673ab7;
+    }
+  }
+  & button {
+    width: 25%;
+    color: #fff;
+    border: 1px solid #673ab7;
+    background-color: #673ab7;
+  }
 `;
 const Container = styled.div`
   max-width: 350px;
