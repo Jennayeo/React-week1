@@ -101,24 +101,39 @@ export const updateBucketFB = (bucket) => {
         let bucket_data = {..._bucket_data, completed: true};
         // 업데이트하기전에 id줘야 딱 하나 지정해서 변경 가능
         //  수정이 완료되면 고칠거니까  .then
+
+        // 아이디가 없다면 에러가 날테니 처음부터 리턴시켜줘서 파이어스토어에 요청 안한다.
+        if(!bucket_data.id) {
+            return;
+        }
+
         bucket_db.doc(bucket_data.id).update(bucket_data).then(docRef => {
             dispatch(updateBucket(bucket));
             // bucket(=index)만 넣어주면 알아서 리듀서가 수정
-        });
-    }
+        }).catch(error => {
+            console.log(error);
+    });
 }
-
+}
 // 삭제하기
 export const deleteBucketFB = (bucket) => {
     // 여기서 bucket도 index로 써도됨
     return function(dispatch, getState){
         // 버킷에있는 bucket번째있는 리스트 가져와라
         const _bucket_data = getState().bucket.list[bucket];
+        
+        // 아이디가 없다면 에러가 날테니 처음부터 리턴시켜줘서 파이어스토어에 요청 안한다.
+        if(!bucket_data.id) {
+            return;
+        }
 
         // bucket데이터의 아이디 가져와서 지정 후 delete
         // 그 다음(삭제 된 후)dispatch 
         bucket_db.doc(_bucket_data.id).delete().then(docRef => {
             dispatch(deleteBucket(bucket));
+        // 삭제 중 오류가 나면 then이 아니라 catch로 빠져 아래를 실행
+        }).catch(error => {
+            console.log(error);
         });
     }
 }
