@@ -6,6 +6,7 @@ import {useSelector, useDispatch} from "react-redux";
 
 const BucketList = (props) => {
   const bucket_list = useSelector(state => state.bucket.list);
+  console.log(bucket_list);
   // store에 있는값(=state)가지고옴
   // state에 버킷에있는 리스트를 저장
   // console.log(props);
@@ -15,10 +16,13 @@ const BucketList = (props) => {
     <ListStyle>
       {bucket_list.map((list, index) => {
         return (
-          <ItemStyle className="list_item" key={index} onClick={() => {
+          <ItemStyle className="list_item" key={index} 
+          // 프로그래스바 색 변경
+          color={list.completed? "orange":"aliceblue"}
+          onClick={() => {
           props.history.push('/detail/'+index);
           }}>
-            {list}
+            {list.text}
           </ItemStyle>
         );
       })}
@@ -37,7 +41,7 @@ const ListStyle = styled.div`
 const ItemStyle = styled.div`
   padding: 16px;
   margin: 8px;
-  background-color: aliceblue;
+  background-color: ${props => props.color};
 `;
 
 export default BucketList;

@@ -14,6 +14,7 @@ import Detail from "./Detail";
 
 // NotFound컴포넌트
 import NotFound from "./NotFound";
+import Progress from "./Progress";
 
 import {connect} from "react-redux";
 import {loadBucket, createBucket} from "./redux/modules/bucket"
@@ -70,6 +71,7 @@ class App extends React.Component {
       <div className="App">
         <Container>
           <Title>내 버킷리스트</Title>
+          <Progress/>
           <Line />
           {/* 컴포넌트를 넣어줍니다. */}
           {/* <컴포넌트 명 [props 명]={넘겨줄 것(리스트, 문자열, 숫자, ...)}/> */}
