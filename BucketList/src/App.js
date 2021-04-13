@@ -19,6 +19,8 @@ import Progress from "./Progress";
 import {connect} from "react-redux";
 import {loadBucket, createBucket} from "./redux/modules/bucket"
 
+import {firestore} from "./firebase";
+
 // 값을 변화시키기 위한 액션 생성 함수를 props로 받아오기 위한 함수
 const mapStateToProps = (state) => {
   return {bucket_list: state.bucket.list};
@@ -62,8 +64,51 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    console.log(this.props);
-  }
+    const bucket = firestore.collection("bucket"); // 콜렉션에 접근해서 bucket이라는 변수에 넣음
+    // 우리가 보고싶은 데이터 컬렉션 안에 bucket_item1이라는 도큐안에있다.
+    // 비동기작업
+    bucket.doc("bucket_item1").get().then((doc) => {
+      if(doc.exists){ //  데이터가 없다면 undefined로 뜨기때문에 처음부터 있는 것들만 콘솔찍기 
+        console.log(doc); // 알아보기 힘듦
+        console.log(doc.data()); // 알아보기 쉽게 데이터 가져옴
+        console.log(doc.id);  // 아이디 가져옴
+      }
+      console.log(doc.exists);
+    }); 
+
+    // 데이터 여러개 가져오기(콜렉션 전체)
+    bucket.get().then(docs => {
+      // 배열 생성(배열에 추가해서 보기좋게)
+      let bucket_data = [];
+
+      docs.forEach((doc) => {
+        if(doc.exists){
+          bucket_data = [...bucket_data, {id: doc.id, ...doc.data()}]
+        } // 스프레드문법 기존에 있는 데이터 하나하나 넣기
+        // 아이디는 추후 수정, 삭제 하기위해
+
+        // console.log(doc);
+        // console.log(doc.data());
+        // console.log(doc.id);
+      });
+      console.log(bucket_data);
+    });
+    
+    // add
+    bucket.add({text:"테니스 치러가기", completed: false}).then((docRef) => {
+      console.log(docRef);
+      console.log(docRef.id);
+    });
+
+    // 수정 (뭘 업데이트 하는줄 알아야하니 doc id를 넣어준다), 어떻게 바꿀지는 text""안에 넣어준다.
+    bucket.doc("bucket_item1").update({text: "벚꽃 구경 가기"})
+
+    // 삭제
+    bucket.doc("bucket_item2").delete().then(docRef => {
+      console.log("삭제되었습니다!")
+    });
+
+    }
 
   // 랜더 함수 안에 리액트 엘리먼트를 넣어줍니다!
   render() {
