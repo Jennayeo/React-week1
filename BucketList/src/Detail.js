@@ -3,7 +3,7 @@ import React from "react";
 // redux hook을 불러온다.
 import {useSelector, useDispatch} from "react-redux";
 // 내가 만든 액션 생성 함수 불러온다.
-import {deleteBucket, updateBucket} from "./redux/modules/bucket";
+import {deleteBucketFB, updateBucketFB} from "./redux/modules/bucket";
 
 
 const Detail = (props) => {
@@ -28,14 +28,14 @@ const Detail = (props) => {
             <h1>{bucket_list[bucket_index].text}</h1>
             <button
                 onClick={() => {
-                    dispatch(deleteBucket(bucket_index)); // 괄호 안에는 액션 생성 함수 들어감
+                    dispatch(deleteBucketFB(bucket_index)); // 괄호 안에는 액션 생성 함수 들어감
                     props.history.push('/');
                     // props.history.goBack();
                 }}>
                 삭제하기
             </button>
             <button onClick={() => {
-                dispatch(updateBucket(bucket_index));
+                dispatch(updateBucketFB(bucket_index));
                 props.history.goBack();
             }}>
                 일정완료
