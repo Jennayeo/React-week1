@@ -87,7 +87,15 @@ const initialState = {
   },
   ranking: [
     { score: 40, name: "르탄이", message: "안녕 Jenna!" },
-    
+    { score: 40, name: "르탄이", message: "안녕 Jenna!" },
+    { score: 40, name: "르탄이", message: "안녕 Jenna!" },
+    { score: 40, name: "르탄이", message: "안녕 Jenna!" },
+    { score: 40, name: "르탄이", message: "안녕 Jenna!" },
+    { score: 40, name: "르탄이", message: "안녕 Jenna!" },
+    { score: 40, name: "르탄이", message: "안녕 Jenna!" },
+    { score: 40, name: "르탄이", message: "안녕 Jenna!" },
+    { score: 40, name: "르탄이", message: "안녕 Jenna!" },
+    { score: 40, name: "르탄이", message: "안녕 Jenna!" }
   ],
 };
 

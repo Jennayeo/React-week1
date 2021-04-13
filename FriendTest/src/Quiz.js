@@ -5,6 +5,7 @@ import TinderCard from "react-tinder-card";
 import {useSelector, useDispatch} from "react-redux";
 import {addAnswer} from "./redux/modules/quiz"; // 대답만 추가
 import Score from "./Score";
+import Progress from "./Progress";
 
 // import SwipeItem from "./SwipeItem";
 
@@ -52,6 +53,8 @@ const Quiz = (props) => {
 
     return (
         <QuizContainer>
+        {/* 프로그래스바 */}
+        <Progress/>
             <p><span>{num+1}번 문제</span></p>
         {/* index는 0으로 시작하니 +1 */}
             {quiz.map((l, idx) => {
