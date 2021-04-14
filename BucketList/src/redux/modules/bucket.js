@@ -123,7 +123,7 @@ export const deleteBucketFB = (bucket) => {
         const _bucket_data = getState().bucket.list[bucket];
         
         // 아이디가 없다면 에러가 날테니 처음부터 리턴시켜줘서 파이어스토어에 요청 안한다.
-        if(!bucket_data.id) {
+        if(!_bucket_data.id) {
             return;
         }
 
