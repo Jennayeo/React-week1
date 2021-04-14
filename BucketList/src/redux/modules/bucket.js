@@ -18,8 +18,9 @@ const initialState = {
         {text: "영화관가기", completed: false},
         {text: "책 읽기", completed: false},
         {text: "코딩하기", completed: false}
-    ]
+    ], 
     // list: ['영화관가기', '책 읽기', '코딩하기'],
+    is_loaded: false
 };
 
 
@@ -147,7 +148,7 @@ export default function reducer(state = initialState, action = {}){
     case "bucket/LOAD": {
         // 길이가 0 보다 클때만 리턴
         if(action.bucket.length > 0){
-            return {list: action.bucket};
+            return {list: action.bucket, is_loaded:true};
         }
         // 데이터 없을땐 initialstate그대로 보여줌
          return state;

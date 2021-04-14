@@ -16,15 +16,21 @@ import Detail from "./Detail";
 import NotFound from "./NotFound";
 import Progress from "./Progress";
 
+// 스피너
+import Spinner from "./Spinner";
+
 import {connect} from "react-redux";
 import {loadBucket, createBucket, loadBucketFB, addBucketFB} from "./redux/modules/bucket"
 
 import {firestore} from "./firebase";
 
 // 값을 변화시키기 위한 액션 생성 함수를 props로 받아오기 위한 함수
-const mapStateToProps = (state) => {
-  return {bucket_list: state.bucket.list};
-} //현재 스테이트값은 스토어에있는 이니셜스테이트 같은 상태값(데이터)
+const mapStateToProps = (state) => ({
+  bucket_list: state.bucket.list,
+  // 페이지 의도적으로가리기 스피너넣기
+  is_loaded: state.bucket.is_loaded
+  // return {bucket_list: state.bucket.list};
+}); //현재 스테이트값은 스토어에있는 이니셜스테이트 같은 상태값(데이터)
 
 const mapDispatchToProps = (dispatch) => {
   return{
@@ -121,35 +127,39 @@ class App extends React.Component {
     return (
       <div className="App">
         <Container>
-          <Title>내 버킷리스트</Title>
-          <Progress/>
-          <Line />
-          {/* 컴포넌트를 넣어줍니다. */}
-          {/* <컴포넌트 명 [props 명]={넘겨줄 것(리스트, 문자열, 숫자, ...)}/> */}
-          {/* Route 쓰는 법 2가지를 모두 써봅시다! */}
-          <Switch>
-            <Route
-              path="/"
-              exact
-              render={(props) => (
-              <BucketList 
-                bucket_list={this.props.bucket_list}
-                history={this.props.history}/>)}
-            />
-            <Route path="/detail/:index" component={Detail}/>
-            {/* <Route component={NotFound}/> */}
-            {/* 뒤로가기 기능까지 추가해보기 */}
-            <Route render={() => (<NotFound history = {this.props.history}/>)}/>
-          </Switch>
-        </Container>
-        {/* 인풋박스와 추가하기 버튼을 넣어줬어요. */}
-        <Input>
-          <input type="text" ref={this.text} />
-          <button onClick={this.addBucketList}>추가하기</button>
-        </Input>
-        <button onClick={() =>{
-          window.scrollTo({top:0, left:0, behavior: "smooth"});
-        }}>위로가기</button>
+            <Title>내 버킷리스트</Title>
+        {!this.props.is_loaded? (<Spinner/>) :(
+          <React.Fragment>
+                <Progress/>
+                <Line />
+                {/* 컴포넌트를 넣어줍니다. */}
+                {/* <컴포넌트 명 [props 명]={넘겨줄 것(리스트, 문자열, 숫자, ...)}/> */}
+                {/* Route 쓰는 법 2가지를 모두 써봅시다! */}
+                <Switch>
+                  <Route
+                    path="/"
+                    exact
+                    render={(props) => (
+                    <BucketList 
+                      bucket_list={this.props.bucket_list}
+                      history={this.props.history}/>)}
+                  />
+                  <Route path="/detail/:index" component={Detail}/>
+                  {/* <Route component={NotFound}/> */}
+                  {/* 뒤로가기 기능까지 추가해보기 */}
+                  <Route render={() => (<NotFound history = {this.props.history}/>)}/>
+                </Switch>
+              {/* 인풋박스와 추가하기 버튼을 넣어줬어요. */}
+              <Input>
+                <input type="text" ref={this.text} />
+                <button onClick={this.addBucketList}>추가하기</button>
+              </Input>
+              <button onClick={() =>{
+                window.scrollTo({top:0, left:0, behavior: "smooth"});
+              }}>위로가기</button>
+          </React.Fragment>
+        )}
+       </Container>
       </div>
     );
   }
